@@ -1,0 +1,15 @@
+name: CI
+on:
+  push:
+    branches: [ main, task-1, task-2, task-3, task-4, task-5 ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - run: pip install -r requirements.txt
+    - run: pip install pytest
+    - run: pytest tests/ -v
