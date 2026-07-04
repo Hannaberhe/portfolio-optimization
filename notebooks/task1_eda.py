@@ -60,3 +60,52 @@ tsla.to_csv('data/tsla.csv')
 bnd.to_csv('data/bnd.csv')
 spy.to_csv('data/spy.csv')
 print("Done")
+
+# Rolling mean and volatility
+import matplotlib.pyplot as plt
+import numpy as np
+
+tsla_close = tsla['Close']
+tsla_returns = tsla_close.pct_change().dropna()
+
+fig, ax = plt.subplots(figsize=(12, 6))
+ax.plot(tsla_returns.index, tsla_returns, alpha=0.3, color='gray', label='Daily Return')
+ax.plot(tsla_returns.index, tsla_returns.rolling(20).mean(), color='blue', label='20-day Rolling Mean')
+ax.plot(tsla_returns.index, tsla_returns.rolling(20).std(), color='red', label='20-day Rolling Std')
+ax.set_title('Rolling Mean and Volatility (20-day)')
+ax.legend()
+plt.tight_layout()
+plt.savefig('reports/rolling_stats.png', dpi=150)
+print("Rolling stats chart saved")
+
+# Outlier detection
+z_scores = (tsla_returns - tsla_returns.mean()) / tsla_returns.std()
+outliers = tsla_returns[abs(z_scores) > 3]
+print(f"Outliers detected: {len(outliers)} days with z-score > 3")
+print("Top 5 outlier dates:")
+print(outliers.sort_values().head())
+
+# Rolling mean and volatility
+import matplotlib.pyplot as plt
+import numpy as np
+
+tsla_close = tsla['Close']
+tsla_returns = tsla_close.pct_change().dropna()
+
+fig, ax = plt.subplots(figsize=(12, 6))
+ax.plot(tsla_returns.index, tsla_returns, alpha=0.3, color='gray', label='Daily Return')
+ax.plot(tsla_returns.index, tsla_returns.rolling(20).mean(), color='blue', label='20-day Rolling Mean')
+ax.plot(tsla_returns.index, tsla_returns.rolling(20).std(), color='red', label='20-day Rolling Std')
+ax.set_title('Rolling Mean and Volatility (20-day)')
+ax.legend()
+plt.tight_layout()
+plt.savefig('reports/rolling_stats.png', dpi=150)
+print("Rolling stats chart saved")
+
+# Outlier detection
+
+z_scores = (tsla_returns - tsla_returns.mean()) / tsla_returns.std()
+outliers = tsla_returns[abs(z_scores) > 3]
+print(f"Outliers detected: {len(outliers)} days with z-score > 3")
+print("Top 5 outlier dates:")
+print(outliers.sort_values().head())
